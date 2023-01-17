@@ -4,6 +4,8 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"encoding/base64"
+	"math/rand"
+	"time"
 )
 
 type Crypt struct {
@@ -62,4 +64,19 @@ func (e *Crypt) Base64Encrypt(data string) string {
 func (e *Crypt) Base64Decrypt(data string) string {
 	cipherText := e.decode(data)
 	return string(cipherText)
+}
+
+func (e *Crypt) GeneratePassword() string {
+
+	rand.Seed(time.Now().Unix())
+
+	str := "k8siooperatortomelintech"
+
+	shuff := []rune(str)
+
+	// Shuffling the string
+	rand.Shuffle(len(shuff), func(i, j int) {
+		shuff[i], shuff[j] = shuff[j], shuff[i]
+	})
+	return e.encode([]byte(string(shuff)))
 }
